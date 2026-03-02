@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+</head>
+<script src="./utils.js"></script>
+<body>
+    <section>
+    <h2>Cadastro</h2>
+    <label for="">Nome</label>
+    <br>
+    <input type="text" name="" id="nome">
+    <br>
+    <br>
+    <label for="email">Email</label>
+    <br>
+    <input type="text" name="email" id="email">
+    <span id="mensagemEmail" style="color: red; display: block; font-size: 12px;"></span>
+    <br>
+    <label for="senha">Senha</label>
+    <br>
+    <input type="text" name="senha" id="senha">
+    <span id="mensagemSenha" style="color: red; display: block; font-size: 12px;"></span>
+    <br>    
+    <button onclick="criarUsuario()">Cadastrar</button>
+    <span id="mensagemSucesso" style="color: green; display: block; font-size: 12px;"></span>
+    <br> 
+    </section>
+    <br>
+    <hr>
+    <h2>Buscar Todos</h2>
+    <button onclick="buscar()">Buscar</button>
+    <br>
+    <div id="div_mensagem"></div>
+</body>
+</html>
+<script>
+
+
+
+   async function buscar(){
+        const resposta = await fetch('http://localhost:3000/usuarios');
+        const dados = await resposta.json();
+
+        let mensagem = "";
+        
+        dados.forEach(elementoAtual => {
+            mensagem += `<br> id: ${elementoAtual.id} | nome: ${elementoAtual.nome} | Email: ${elementoAtual.email} |  <button onclick="deletarUsuario(${elementoAtual.id})">Deletar</button><br>`;
+        })
+    
+
+        div_mensagem.innerHTML = mensagem;
+    }
+
+
+    async function criarUsuario(){
+        const nomeUsuario = nome.value;
+        const emailUsuario = email.value;
+        const senhaUsuario = senha.value;
+
+    const input_email = document.getElementById('email');
+    const displayEmail = document.getElementById('mensagemEmail');
+
+
+
+    const erroEmail = validarEmail(input_email.value);
+    
+        if (erroEmail) {
+            displayEmail.style.color = "red";
+            displayEmail.textContent = erroEmail;
+        return;
+        }
+            displayEmail.textContent = "Email válido!";
+            displayEmail.style.color = "green";
+
+
+    const inputSenha = document.getElementById('senha');
+    const displaySenha = document.getElementById('mensagemSenha');
+    
+    
+    
+    const erroSenha = validarSenha(inputSenha.value);
+    
+    if (erroSenha) {
+        displaySenha.style.color = "red";
+        displaySenha.textContent = erroSenha;
+        return;
+    }
+    displaySenha.textContent = "Senha forte!";
+    displaySenha.style.color = "green";
+    
+    const resposta = await fetch('http://localhost:3000/usuarios',{
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            nome: nomeUsuario,
+            email: emailUsuario,
+            senha: senhaUsuario
+        })
+    }
+);
+const dados = await resposta.json();
+const displaySucesso = document.getElementById('mensagemSucesso');
+displaySucesso.textContent = "Usuário cadastrado com sucesso!";
+
+}
+
+async function deletarUsuario(idUsuario) {
+    const resposta = await fetch(`http://localhost:3000/usuarios/${idUsuario}`,{
+        method: "DELETE",
+    }
+);
+const dados = await resposta.json();
+        buscar()
+        
+    }
+</script>

@@ -1,0 +1,20 @@
+{
+  "usuarios": [
+    {
+      "nome": "Otavio",
+      "email": "otavio@outlook.com",
+      "senha": "Otavio1234.",
+      "id": 1
+    },
+    {
+      "nome": "Otavio",
+      "email": "otavio2@gmail.com",
+      "senha": "Otavio123455?",
+      "id": 2
+    }
+  ],
+  "teste": [
+    "ABC",
+    "ZXC"
+  ]
+}
