@@ -6,7 +6,59 @@
     <title></title>
 </head>
 <script src="./utils.js"></script>
-<body>
+<style>
+    body {
+        margin: 0px;
+     
+        font-size: 20px;
+    }
+
+    .container {
+        display: flex;
+        width: 100%;
+        height: 100vh;
+        flex-direction: column;
+    }
+
+    .container h3 {
+        padding-left: 10px;
+    }
+
+    section{
+        padding-left: 10px;
+    }
+
+   .tabela{
+    width: 60%;
+    border: 1px solid black;
+    border-collapse: collapse;
+    text-align: left;
+    
+   }
+
+   input{
+    font-size: 18px;
+   }
+
+
+   .btn-cadastrar{
+        width: 5%;
+        height: 30px;
+        display: flex;
+        align-self: center;
+        justify-content: center;
+        align-items: center;
+        font-size: 16px;
+    }
+
+
+    .btn-deletar{
+        font-size: 16px;
+    }
+
+</style>
+<body onload="buscar()">
+    <div class="container">
     <section>
     <h2>Cadastro</h2>
     <label for="">Nome</label>
@@ -23,42 +75,43 @@
     <br>
     <input type="text" name="senha" id="senha">
     <span id="mensagemSenha" style="color: red; display: block; font-size: 12px;"></span>
-    <br>    
-    <button onclick="criarUsuario()">Cadastrar</button>
+    <br>
+    <button class="btn-cadastrar" onclick="criarUsuario()">Cadastrar</button>
     <span id="mensagemSucesso" style="color: green; display: block; font-size: 12px;"></span>
-    <br> 
+    <br>
     </section>
     <br>
     <hr>
-    <h2>Buscar Todos</h2>
-    <button onclick="buscar()">Buscar</button>
-    <br>
-    <div id="div_mensagem"></div>
+    <hr>
+     <section>
+        <h3>Listagem de Usuários</h3>
+        <table class="tabela">
+            <thead>
+                <tr style="background-color: #f2f2f2;">
+                    <th>Id</th>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="lista">
+            </tbody>
+             </table>
+        </div>
+    </div>
+    </section>
 </body>
 </html>
 <script>
 
 
 
-   async function buscar(){
-        const resposta = await fetch('http://localhost:3000/usuarios');
-        const dados = await resposta.json();
-
-        let mensagem = "";
-        
-        dados.forEach(elementoAtual => {
-            mensagem += `<br> id: ${elementoAtual.id} | nome: ${elementoAtual.nome} | Email: ${elementoAtual.email} |  <button onclick="deletarUsuario(${elementoAtual.id})">Deletar</button><br>`;
-        })
-    
-
-        div_mensagem.innerHTML = mensagem;
-    }
-
+  
 
     async function criarUsuario(){
-        const nomeUsuario = nome.value;
-        const emailUsuario = email.value;
-        const senhaUsuario = senha.value;
+    const nomeUsuario = nome.value;
+    const emailUsuario = email.value;
+    const senhaUsuario = senha.value;
 
     const input_email = document.getElementById('email');
     const displayEmail = document.getElementById('mensagemEmail');
@@ -101,19 +154,49 @@
         })
     }
 );
-const dados = await resposta.json();
-const displaySucesso = document.getElementById('mensagemSucesso');
-displaySucesso.textContent = "Usuário cadastrado com sucesso!";
+    const dados = await resposta.json();
+    const displaySucesso = document.getElementById('mensagemSucesso');
+    displaySucesso.textContent = "Usuário cadastrado com sucesso!";
+    buscar()
 
 }
 
-async function deletarUsuario(idUsuario) {
-    const resposta = await fetch(`http://localhost:3000/usuarios/${idUsuario}`,{
-        method: "DELETE",
-    }
-);
-const dados = await resposta.json();
-        buscar()
+
+
+
+async function buscar() {
+
+        const resposta = await fetch('http://localhost:3000/usuarios');
+        const dados = await resposta.json();
+
+        const tbody = document.querySelector("#lista");
+
+        let mensagem = "";
+
+        dados.forEach(elementoAtual => {
+            mensagem += `
+            <tr>
+                 <td>${elementoAtual.id}</td>
+                <td>${elementoAtual.nome}</td>
+                <td>${elementoAtual.email}</td>
+                <td>
+                    <button class="btn-deletar" onclick="deletarUsuario('${elementoAtual.id}')">Deletar</button>
+                </td>
+            <tr>`;
+        })
         
+        tbody.innerHTML = mensagem;
     }
+
+    async function deletarUsuario(idUsuario) {
+        const resposta = await fetch(`http://localhost:3000/usuarios/${idUsuario}`, {
+            method: "DELETE",
+        }
+        );
+        const dados = await resposta.json();
+        buscar()
+
+    }
+
+
 </script>

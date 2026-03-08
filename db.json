@@ -2,15 +2,21 @@
   "usuarios": [
     {
       "nome": "Otavio",
-      "email": "otavio@outlook.com",
+      "email": "otavio@gmail.com",
       "senha": "Otavio1234.",
       "id": 1
     },
     {
-      "nome": "Otavio",
-      "email": "otavio2@gmail.com",
-      "senha": "Otavio123455?",
+      "nome": "Luis",
+      "email": "luis@gmail.com",
+      "senha": "LuisFernando1234.",
       "id": 2
+    },
+    {
+      "nome": "Eduarda",
+      "email": "eduarda@gmail.com",
+      "senha": "Eduarda1234.",
+      "id": 3
     }
   ],
   "teste": [
