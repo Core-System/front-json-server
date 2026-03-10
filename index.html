@@ -56,6 +56,24 @@
         font-size: 16px;
     }
 
+    #mensagemEmail{
+    color: red;
+    display: block;
+    font-size: 14px;
+    }
+
+    #mensagemSenha{
+    color: red;
+    display: block;
+    font-size: 14px;
+    }
+
+    #mensagemSucesso{
+    color: green;
+    display: block;
+    font-size: 14px;
+}
+
 </style>
 <body onload="buscar()">
     <div class="container">
@@ -69,15 +87,15 @@
     <label for="email">Email</label>
     <br>
     <input type="text" name="email" id="email">
-    <span id="mensagemEmail" style="color: red; display: block; font-size: 12px;"></span>
+    <span id="mensagemEmail"></span>
     <br>
     <label for="senha">Senha</label>
     <br>
-    <input type="text" name="senha" id="senha">
-    <span id="mensagemSenha" style="color: red; display: block; font-size: 12px;"></span>
+    <input type="password" name="senha" id="senha">
+    <span id="mensagemSenha"></span>
     <br>
     <button class="btn-cadastrar" onclick="criarUsuario()">Cadastrar</button>
-    <span id="mensagemSucesso" style="color: green; display: block; font-size: 12px;"></span>
+    <span id="mensagemSucesso"></span>
     <br>
     </section>
     <br>
@@ -144,7 +162,7 @@
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({
             nome: nomeUsuario,
-            email: emailUsuario,
+            email: emailUsuario.toLowerCase(),
             senha: senhaUsuario
         })
     }
@@ -152,7 +170,7 @@
     const dados = await resposta.json();
     const displaySucesso = document.getElementById('mensagemSucesso');
     displaySucesso.textContent = "Usuário cadastrado com sucesso!";
-    buscar()
+    window.location.reload();
 
 }
 
